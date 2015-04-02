@@ -1,0 +1,62 @@
+function createCities(num){
+  var cities = [];
+  for(var i = 0; i < num; i++){
+    cities.push({
+      x: Math.floor(Math.random() * num),
+      y: Math.floor(Math.random() * num)
+    });
+  };
+  return cities;
+};
+
+function filterCities(arr){
+  var hash = {};
+  arr.forEach(function(item, ind){
+    var key = 'x' + item.x + 'y' + item.y
+    hash[key] === 0 ? hash[key]++ : hash[key] = 0;
+  });
+  
+  return arr.filter(function(item, ind){
+    var key = 'x' + item.x + 'y' + item.y;
+    var res = hash[key] <= 0;
+    if(!res) hash[key]--;
+    return res;
+  })
+}
+
+function makeCities(max){
+  var cities = [];
+  do {
+    cities = cities.concat(createCities(max - cities.length))
+    cities = filterCities(cities);
+  } while (cities.length < max);
+  // The do - while loop 
+  cities = cities.map(function(a, ind){
+    var obj = {
+      coords: {x: a.x, y: a.y},
+      dist: []
+    };
+    cities.forEach(function(b, ind){
+      if(JSON.stringify(b) === JSON.stringify(a)) return;
+      obj.dist.push({
+        coords: {x: b.x, y: b.y},
+        dist: cd(a, b)
+      });
+    }); 
+    return obj;
+  });
+  return cities;
+};
+
+function cd(a, b){
+  var sideOne = Math.abs(a.x - b.x);
+  var sideTwo = Math.abs(a.y - b.y);
+  return Math.sqrt((sideOne * sideOne) + (sideTwo * sideTwo));
+}
+
+function travellingSalesman(arr){
+  var shortest = {route: null, dist: null};
+  arr.forEach(function(item, index){
+    
+  });
+}

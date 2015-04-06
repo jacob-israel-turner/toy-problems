@@ -1,0 +1,23 @@
+{
+  "name": "toy-problems",
+  "version": "1.0.0",
+  "description": "toy-problems ============",
+  "main": "November 10.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacob-israel-turner/toy-problems"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jacob-israel-turner/toy-problems/issues"
+  },
+  "homepage": "https://github.com/jacob-israel-turner/toy-problems",
+  "dependencies": {
+    "babel": "^5.0.9",
+    "console-time": "^1.0.4"
+  }
+}

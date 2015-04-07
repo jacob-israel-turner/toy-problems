@@ -6,6 +6,7 @@ var myAlgos = [insertSort, quickSort];
 
 t(myAlgos, 100000, 10);
 
+// t(quickSort, 100000, 10);
 
 // console.log(medianSort([1,6,4,12,8,2,3,2,3,6,5]));
 // console.log(insertSort([2,6,5,7,4,3,4]));
@@ -15,10 +16,33 @@ function quickSort(arr){
 	if(arr.length <= 1 || arr.every(allTheSame)) return arr;
 	var partitions = partition(arr, findPivot(arr.length));
 
-	return partitions.map(function(item, ind){
-		return quickSort(item).reduce(concat, []);
-	}).reduce(concat, []);
+	/*
+	 * Future optimizations:
+	 * - Choose median by 'median of 3' method
+	 * - Use insertionSort for arrays of a smaller size
+	*/
 
+
+	/*
+	// This was the old way of doing things.  It gave my quadratic(?) runtime with
+	// absolutely terrible overhead.  It was worse than the insertion sort.
+	// Removing these nested high-order functions (or, loops) fixed all
+	// my problems.
+	return partitions.reduce(function(prev, next, ind){
+		return prev.concat(quickSort(next).reduce(concat, []));
+	}, []);
+	*/
+	
+	return sort(partitions);
+
+	function sort(arr){
+		var newArr = [];
+		arr.forEach(function(item, ind, arr){
+			var sorted = quickSort(item);
+			newArr = newArr.concat(sorted);
+		});
+		return newArr;
+	};
 	
 	function concat(prev, next){
 		return prev.concat(next);
@@ -40,7 +64,6 @@ function quickSort(arr){
 	function findPivot(n){
 		return Math.floor(Math.random() * n);
 	}
-	return arr;
 };
 
 

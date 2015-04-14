@@ -2,26 +2,49 @@ import consoleTime from 'console-time';
 
 var t =  consoleTime.run;
 
-var myAlgos = [insertSort, quickSort];
+var myAlgos = [insertSort, quickSort, heapSort];
 
-t(myAlgos, 100000, 10);
+// t(myAlgos, 100000, 10);
 
 // t(quickSort, 100000, 10);
+t(heapSort, 100000, 10);
+
 
 // console.log(medianSort([1,6,4,12,8,2,3,2,3,6,5]));
 // console.log(insertSort([2,6,5,7,4,3,4]));
 // console.log(quickSort([4,2,6,7,3,4,5,3,7]));
 
+
+function heapSort(arr){
+ var sortedArr = [];
+
+ /*
+ 	* While it works, its runtime is horrendous (sp?)
+ 	* I think it's because I'm completely rebuilding the heap from scratch after each iteration.
+ 	* Instead, I need to check the integrity and use 'bubbleUp' if it's not accurate anymore.
+	*/
+
+ while(arr.length > 0){
+ 	arr = heapify(arr);
+ 	sortedArr.unshift(arr.splice(0, 1)[0]);
+ };
+
+ return sortedArr;
+
+};
+
+
 function quickSort(arr){	
-	if(arr.length <= 1 || arr.every(allTheSame)) return arr;
-	var partitions = partition(arr, findPivot(arr.length));
 
 	/*
 	 * Future optimizations:
 	 * - Choose median by 'median of 3' method
 	 * - Use insertionSort for arrays of a smaller size
-	*/
+	 */
 
+
+	if(arr.length <= 1 || arr.every(allTheSame)) return arr;
+	var partitions = partition(arr, findPivot(arr.length));
 
 	/*
 	// This was the old way of doing things.  It gave my quadratic(?) runtime with
@@ -43,10 +66,12 @@ function quickSort(arr){
 		});
 		return newArr;
 	};
-	
+
+	/*
 	function concat(prev, next){
 		return prev.concat(next);
 	};
+	*/
 	function partition(arr, pivot){
 		var first = arr.filter(function(item, ind){
 			return (item <= arr[pivot]);
@@ -137,9 +162,7 @@ function medianSort(arr){
 	  */
 	};
 	
-	function diff(a, b){
-		return Math.abs(Number(a) - Number(b));
-	}
+	
 
 	return arr;
 };
@@ -153,10 +176,38 @@ function insertSort(arr){
 		}
 	}
 	return arr;
+};
+
+function heapify(arr){
+	
+	var heap = [];
+
+	for(var i = 0; i < arr.length; i++){
+
+		var currentInd = heap.push(arr[i]) - 1;
+		if(currentInd <= 0) continue;
+		heap = bubbleUp(currentInd, heap);
+	};
+
+	return heap;
+
+}
+
+function bubbleUp(ind, arr){
+	var parentInd = Math.floor((ind - 1) / 2);
+	if(arr[ind] > arr[parentInd]){
+		s(arr, ind, parentInd);
+		bubbleUp(parentInd, arr);
+	}
+	return arr;
 }
 
 function s(array, a, b){
   var temp = array[a];
   array[a] = array[b];
   array[b] = temp;
-}
+};
+
+function diff(a, b){
+		return Math.abs(Number(a) - Number(b));
+};

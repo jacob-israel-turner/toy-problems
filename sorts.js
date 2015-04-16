@@ -7,30 +7,82 @@ var myAlgos = [insertSort, quickSort, heapSort];
 // t(myAlgos, 100000, 10);
 
 // t(quickSort, 100000, 10);
-t(heapSort, 100000, 10);
+// t(heapSort, 100000, 10);
+t(countingSort, 1000000, 10);
 
+/*
+var testArr = [];
+for(var i = 0; i < 100; i++){
+	testArr.push(Math.floor(Math.random() * 100));
+}
+*/
 
+// console.log(countingSort(testArr));
+// console.log(heapSort([1,6,3,14,19,3,20,10,8,1,1,2,12]));
 // console.log(medianSort([1,6,4,12,8,2,3,2,3,6,5]));
 // console.log(insertSort([2,6,5,7,4,3,4]));
 // console.log(quickSort([4,2,6,7,3,4,5,3,7]));
 
 
+function countingSort(arr){
+
+	return buildSortedArr(arr, buildCount(arr, findLargest(arr).num));
+
+
+	function buildSortedArr(arr, count){
+
+		var sortedArr = [];
+
+		for(var i = 0; i < arr.length; i++){
+			sortedArr.push(0);
+		}
+
+		for(var i = 0; i < arr.length; i++){
+			sortedArr[count[arr[i]]] = arr[i];
+			count[arr[i]]--;
+		}
+		return sortedArr;
+	}
+
+	function buildCount(arr, largest){
+		var countArr = [];
+		for(var i = 0; i < largest + 1; i++){
+			countArr.push(0);
+		}
+		for(var i = 0; i < arr.length; i++){
+			countArr[arr[i]]++;
+		}
+		for(var i = 0; i < countArr.length; i++){
+			countArr[i] += countArr[i - 1] || 0;
+		}
+		return countArr;
+	}
+
+	function findLargest(arr){
+		var largest = {
+			num: null,
+			index: null			
+		};
+		for(var i = 0; i < arr.length; i++){
+			if((!largest.num && largest.num !== 0) || arr[i] > largest.num) {
+				largest.num = arr[i];
+				largest.index = i;
+			}
+		}
+		return largest
+	}
+}
+
+
 function heapSort(arr){
- var sortedArr = [];
-
- /*
- 	* While it works, its runtime is horrendous (sp?)
- 	* I think it's because I'm completely rebuilding the heap from scratch after each iteration.
- 	* Instead, I need to check the integrity and use 'bubbleUp' if it's not accurate anymore.
-	*/
-
- while(arr.length > 0){
- 	arr = heapify(arr);
- 	sortedArr.unshift(arr.splice(0, 1)[0]);
- };
-
- return sortedArr;
-
+	var sortedArr = [];
+	arr = heapify(arr);
+	while(arr.length > 0){
+ 		s(arr, 0, arr.length-1);
+ 		sortedArr.unshift(arr.splice(arr.length-1, 1)[0]);
+ 		bubbleDown(0, arr);
+	};
+	return sortedArr;
 };
 
 
@@ -179,27 +231,45 @@ function insertSort(arr){
 };
 
 function heapify(arr){
-	
 	var heap = [];
-
-	for(var i = 0; i < arr.length; i++){
-
-		var currentInd = heap.push(arr[i]) - 1;
-		if(currentInd <= 0) continue;
-		heap = bubbleUp(currentInd, heap);
-	};
-
+		for(var i = 0; i < arr.length; i++){
+			var currentInd = heap.push(arr[i]) - 1;
+			if(currentInd <= 0) continue;
+			heap = bubbleUp(currentInd, heap);
+		};
 	return heap;
-
 }
 
 function bubbleUp(ind, arr){
-	var parentInd = Math.floor((ind - 1) / 2);
-	if(arr[ind] > arr[parentInd]){
-		s(arr, ind, parentInd);
-		bubbleUp(parentInd, arr);
-	}
+		var parentInd = Math.floor((ind - 1) / 2);
+			if(arr[ind] > arr[parentInd]){
+				s(arr, ind, parentInd);
+				bubbleUp(parentInd, arr);
+			}
 	return arr;
+}
+
+function bubbleDown(ind, arr){
+	var left = 2 * ind + 1;
+	var right = 2 * ind + 2;
+	
+		var largest = ind;
+
+	/*
+	if(arr[ind] < arr[left] || arr[ind] < arr[right]){
+		arr[left] > arr[right] ? s(arr, ind, left) : s(arr, ind, right);
+	}
+	*/
+
+	if(arr[left] > arr[ind] && arr[left] > arr[right]){
+		largest = left;
+	} else if(arr[right] > arr[ind] && arr[right] > arr[left]){
+		largest = right;
+	};
+	if(largest !== ind){
+		s(arr, ind, largest);
+		bubbleDown(largest, arr);
+	};
 }
 
 function s(array, a, b){
@@ -209,5 +279,5 @@ function s(array, a, b){
 };
 
 function diff(a, b){
-		return Math.abs(Number(a) - Number(b));
+	return Math.abs(Number(a) - Number(b));
 };

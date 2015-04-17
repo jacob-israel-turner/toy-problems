@@ -2,13 +2,19 @@ import consoleTime from 'console-time';
 
 var t =  consoleTime.run;
 
-var myAlgos = [insertSort, quickSort, heapSort];
+var myAlgos = [insertSort, quickSort, heapSort, countingSort];
 
-// t(myAlgos, 100000, 10);
+var options = {
+	
+	max: 100000,
+	steps: 10
+}
 
-// t(quickSort, 100000, 10);
-// t(heapSort, 100000, 10);
-t(countingSort, 1000000, 10);
+// console.log(t(myAlgos, options));
+
+// t(quickSort, options);
+// t(heapSort, options);
+// t(countingSort, options);
 
 /*
 var testArr = [];
@@ -17,11 +23,63 @@ for(var i = 0; i < 100; i++){
 }
 */
 
+console.log(bucketSort([1,5,2,3,4,5,2,1,0,10]));
 // console.log(countingSort(testArr));
 // console.log(heapSort([1,6,3,14,19,3,20,10,8,1,1,2,12]));
 // console.log(medianSort([1,6,4,12,8,2,3,2,3,6,5]));
 // console.log(insertSort([2,6,5,7,4,3,4]));
 // console.log(quickSort([4,2,6,7,3,4,5,3,7]));
+
+
+function bucketSort(arr){
+
+	// console.log(arr);
+
+	if(arr.length <= 1) return arr;
+
+	var buckets = disperse(arr, makeBucketArray(arr.length));
+
+	
+	return buckets.reduce(function(prev, next){
+		console.log(prev, next);
+		return prev.concat(bucketSort(next));							 
+	}, []);
+
+	console.log(buckets);
+
+
+	function trimBuckets(arr){
+		return arr.filter(function(item, ind){
+			return item.length > 0;
+		})
+	}
+
+	function makeBucketArray(n){
+		var buckets = [];
+		for(var i = 0; i < n; i++){
+			buckets.push([]);
+		};
+		return buckets;
+	}
+
+	function disperse(arr, buckets){
+		for(var i = 0; i < arr.length; i++){
+			buckets[linkIndex(arr[i], arr.length)].push(arr[i]);
+		};
+		return buckets;
+	}
+
+	function linkIndex(x, n, max){
+		//src: https://www.cs.usfca.edu/~galles/visualization/BucketSort.html
+		return Math.floor((x * n) / ((max || n) + 1));
+	}
+
+	function msbits(x, k){
+		//src: http://en.wikipedia.org/wiki/Bucket_sort
+		return x * Math.floor(x / Math.pow(2, (x-k)));
+	}
+
+};
 
 
 function countingSort(arr){

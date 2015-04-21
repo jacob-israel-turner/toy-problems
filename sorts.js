@@ -1,14 +1,22 @@
 import consoleTime from 'console-time'; 
-import { heapify, bubbleUp, bubbleDown, s, diff, isSorted } from './utils.js';
+import { Link, heapify, bubbleUp, bubbleDown, s, diff, isSorted } from './utils.js';
 
+var myLink = new Link();
 
+myLink.add(1);
+myLink.add(3);
+myLink.add(5);
+var result =  myLink.traverse(4);
+
+setTimeout(function(){
+	console.log('RESULT:', result);
+}, 1000);
 
 var t =  consoleTime.run;
 
 var myAlgos = [insertSort, quickSort, heapSort, countingSort];
 
-var options = {
-	
+var options = {	
 	max: 100000,
 	steps: 10
 }
@@ -18,7 +26,7 @@ var options = {
 // t(quickSort, options);
 // t(heapSort, options);
 // t(countingSort, options);
-t(bucketSort, options);
+// t(bucketSort, options);
 
 /*
 var testArr = [];
@@ -38,21 +46,18 @@ for(var i = 0; i < 100; i++){
 
 function bucketSort(arr){
 	if(arr.length <= 1) return arr;
-	
-
 	var buckets = disperse(arr, makeBucketArray(arr.length));
-
-	
 	return buckets.reduce(function(prev, next){
 		return prev.concat(next);							 
 	}, []);
 
-
+	/*
 	function trimBuckets(arr){
 		return arr.filter(function(item, ind){
 			return item.length > 0;
 		})
 	}
+*/
 
 	function makeBucketArray(n){
 		var buckets = [];
@@ -93,10 +98,12 @@ function bucketSort(arr){
 		return Math.floor((x * n) / ((max || n) + 1));
 	}
 
+	/*
 	function msbits(x, k){
 		//src: http://en.wikipedia.org/wiki/Bucket_sort
 		return x * Math.floor(x / Math.pow(2, (x-k)));
 	}
+	*/
 
 };
 

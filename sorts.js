@@ -1,4 +1,7 @@
 import consoleTime from 'console-time'; 
+import { heapify, bubbleUp, bubbleDown, s, diff, isSorted } from './utils.js';
+
+
 
 var t =  consoleTime.run;
 
@@ -15,6 +18,7 @@ var options = {
 // t(quickSort, options);
 // t(heapSort, options);
 // t(countingSort, options);
+t(bucketSort, options);
 
 /*
 var testArr = [];
@@ -23,7 +27,8 @@ for(var i = 0; i < 100; i++){
 }
 */
 
-console.log(bucketSort([1,5,2,3,4,5,2,1,0,10]));
+
+// console.log(bucketSort([1,5,2,3,4,5,2,1,0,10]));
 // console.log(countingSort(testArr));
 // console.log(heapSort([1,6,3,14,19,3,20,10,8,1,1,2,12]));
 // console.log(medianSort([1,6,4,12,8,2,3,2,3,6,5]));
@@ -32,20 +37,15 @@ console.log(bucketSort([1,5,2,3,4,5,2,1,0,10]));
 
 
 function bucketSort(arr){
-
-	// console.log(arr);
-
 	if(arr.length <= 1) return arr;
+	
 
 	var buckets = disperse(arr, makeBucketArray(arr.length));
 
 	
 	return buckets.reduce(function(prev, next){
-		console.log(prev, next);
-		return prev.concat(bucketSort(next));							 
+		return prev.concat(next);							 
 	}, []);
-
-	console.log(buckets);
 
 
 	function trimBuckets(arr){
@@ -62,11 +62,30 @@ function bucketSort(arr){
 		return buckets;
 	}
 
+
 	function disperse(arr, buckets){
 		for(var i = 0; i < arr.length; i++){
-			buckets[linkIndex(arr[i], arr.length)].push(arr[i]);
+			// buckets[linkIndex(arr[i], arr.length)].push(arr[i]);
+			
+			buckets[linkIndex(arr[i], arr.length)] = insert(arr[i], buckets[linkIndex(arr[i], arr.length)]);
 		};
 		return buckets;
+	}
+
+	function insert(item, arr){
+		var i = 0;
+		do {
+			if(item < arr[i]) {
+				arr.splice(i, 0, item);
+				break;
+			}
+			else if(i >= arr.length - 1){
+				arr.push(item);	
+				break;
+			}
+			i++;
+		} while (i < arr.length);
+		return arr;
 	}
 
 	function linkIndex(x, n, max){
@@ -286,56 +305,6 @@ function insertSort(arr){
 		}
 	}
 	return arr;
-};
-
-function heapify(arr){
-	var heap = [];
-		for(var i = 0; i < arr.length; i++){
-			var currentInd = heap.push(arr[i]) - 1;
-			if(currentInd <= 0) continue;
-			heap = bubbleUp(currentInd, heap);
-		};
-	return heap;
 }
 
-function bubbleUp(ind, arr){
-		var parentInd = Math.floor((ind - 1) / 2);
-			if(arr[ind] > arr[parentInd]){
-				s(arr, ind, parentInd);
-				bubbleUp(parentInd, arr);
-			}
-	return arr;
-}
 
-function bubbleDown(ind, arr){
-	var left = 2 * ind + 1;
-	var right = 2 * ind + 2;
-	
-		var largest = ind;
-
-	/*
-	if(arr[ind] < arr[left] || arr[ind] < arr[right]){
-		arr[left] > arr[right] ? s(arr, ind, left) : s(arr, ind, right);
-	}
-	*/
-
-	if(arr[left] > arr[ind] && arr[left] > arr[right]){
-		largest = left;
-	} else if(arr[right] > arr[ind] && arr[right] > arr[left]){
-		largest = right;
-	};
-	if(largest !== ind){
-		s(arr, ind, largest);
-		bubbleDown(largest, arr);
-	};
-}
-
-function s(array, a, b){
-  var temp = array[a];
-  array[a] = array[b];
-  array[b] = temp;
-};
-
-function diff(a, b){
-	return Math.abs(Number(a) - Number(b));
-};

@@ -41,7 +41,7 @@ for(var i = 0; i < 100; i++){
 }
 */
 
-bucketSort([1,5,2,3,4,5,2,1,0,10]);
+console.log(bucketSort([1,5,2,3,4,5,2,1,0,10]));
 // console.log(countingSort(testArr));
 // console.log(heapSort([1,6,3,14,19,3,20,10,8,1,1,2,12]));
 // console.log(medianSort([1,6,4,12,8,2,3,2,3,6,5]));
@@ -50,12 +50,18 @@ bucketSort([1,5,2,3,4,5,2,1,0,10]);
 
 
 function bucketSort(arr){
+
+	/*
+	 * It's not working.
+	 * I think 'concatLinkList' is only returning one
+	 * value instead of the array of items.
+
 	if(arr.length <= 1) return arr;
 	var buckets = disperse(arr, makeBucketArray(arr.length));
 
 	return buckets.reduce(function(prev, next){
 		var res = prev.concat(concatLinkList(next));	
-		console.log('RESULT', res);
+		// console.log('RESULT', res);
 		return res;	
 	}, []);
 
@@ -68,7 +74,7 @@ function bucketSort(arr){
 
  function concatLinkList(obj){
 	var arr = [];
-	
+	// console.log(obj);
 	if(obj.start) return arr.concat(concatLinkList(obj.start));
 	if(obj.next) return arr.concat(concatLinkList(obj.next));
 	else return arr.concat([obj.data]);

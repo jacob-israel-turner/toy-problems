@@ -6,11 +6,15 @@ var myLink = new Link();
 myLink.add(1);
 myLink.add(3);
 myLink.add(5);
-var result =  myLink.traverse(4);
+myLink.add(10);
+myLink.add(4, true);
+console.log(myLink.start.next.next);
 
+/*
 setTimeout(function(){
 	console.log('RESULT:', result);
 }, 1000);
+*/
 
 var t =  consoleTime.run;
 

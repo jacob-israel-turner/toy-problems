@@ -1,13 +1,12 @@
 export { Link, heapify, bubbleUp, bubbleDown, s, diff, isSorted };
 
-
-
 function Link(){
 	this.start = null;
 	this.end = null;
 }
 
 Link.prototype.add = function(item, order){
+  // http://www.i-programmer.info/programming/javascript/5328-javascript-data-structures-the-linked-list.html 	
 	var newItem = {
 		data: item,
 		next: null
@@ -15,7 +14,9 @@ Link.prototype.add = function(item, order){
 	if(order){
 				
 		var point = this.traverse(item, this.start);
-		console.log(point);
+		var temp = point.next;
+		point.next = newItem;
+		newItem.next = temp;
 
 	} else {
 		if(this.end){
@@ -31,16 +32,24 @@ Link.prototype.add = function(item, order){
 };
 
 Link.prototype.traverse = function(x, y){
+	
+	// This function will return the item before
+	// the first item that x is bigger than
+	// Or null if it is not bigger than anything
+	// Allowing you to insert item in the linked list in order
+
 	y = y || this.start;
-	console.log('PASSED:', x < y.data);
-	if(x < y.data) {
-		console.log('ITEM FOUND:', y);
-		// Everything seems to be working, except when I test the return value
-		// It gives me undefined.
-		// wtf.
+	
+	if(y === this.start){
+		if(x < y.data){
+			return null;
+		}
+	}
+	
+	if(x < y.next.data) {
 		return y;
 	} else {
-		this.traverse(x, y.next);
+		return this.traverse(x, y.next);
 	}
 }
 

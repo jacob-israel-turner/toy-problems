@@ -1,14 +1,16 @@
 import consoleTime from 'console-time'; 
 import { Link, heapify, bubbleUp, bubbleDown, s, diff, isSorted } from './utils.js';
 
-var myLink = new Link();
 
+/*
+var myLink = new Link();
 myLink.add(1);
 myLink.add(3);
 myLink.add(5);
-myLink.add(10);
+myLink.add(10, true);
 myLink.add(4, true);
-console.log(myLink.start.next.next);
+console.log(myLink.start.next);
+*/
 
 /*
 setTimeout(function(){
@@ -39,8 +41,7 @@ for(var i = 0; i < 100; i++){
 }
 */
 
-
-// console.log(bucketSort([1,5,2,3,4,5,2,1,0,10]));
+bucketSort([1,5,2,3,4,5,2,1,0,10]);
 // console.log(countingSort(testArr));
 // console.log(heapSort([1,6,3,14,19,3,20,10,8,1,1,2,12]));
 // console.log(medianSort([1,6,4,12,8,2,3,2,3,6,5]));
@@ -51,9 +52,28 @@ for(var i = 0; i < 100; i++){
 function bucketSort(arr){
 	if(arr.length <= 1) return arr;
 	var buckets = disperse(arr, makeBucketArray(arr.length));
+
+	return buckets.reduce(function(prev, next){
+		var res = prev.concat(concatLinkList(next));	
+		console.log('RESULT', res);
+		return res;	
+	}, []);
+
+	/*
 	return buckets.reduce(function(prev, next){
 		return prev.concat(next);							 
 	}, []);
+	*/
+
+
+ function concatLinkList(obj){
+	var arr = [];
+	
+	if(obj.start) return arr.concat(concatLinkList(obj.start));
+	if(obj.next) return arr.concat(concatLinkList(obj.next));
+	else return arr.concat([obj.data]);
+
+ };
 
 	/*
 	function trimBuckets(arr){
@@ -66,7 +86,7 @@ function bucketSort(arr){
 	function makeBucketArray(n){
 		var buckets = [];
 		for(var i = 0; i < n; i++){
-			buckets.push([]);
+			buckets.push(new Link());
 		};
 		return buckets;
 	}
@@ -76,7 +96,9 @@ function bucketSort(arr){
 		for(var i = 0; i < arr.length; i++){
 			// buckets[linkIndex(arr[i], arr.length)].push(arr[i]);
 			
-			buckets[linkIndex(arr[i], arr.length)] = insert(arr[i], buckets[linkIndex(arr[i], arr.length)]);
+			// buckets[linkIndex(arr[i], arr.length)] = insert(arr[i], buckets[linkIndex(arr[i], arr.length)]);
+			// console.log(buckets);
+			buckets[linkIndex(arr[i], arr.length)].add(arr[i], true);
 		};
 		return buckets;
 	}

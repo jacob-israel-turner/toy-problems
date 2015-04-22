@@ -11,12 +11,22 @@ Link.prototype.add = function(item, order){
 		data: item,
 		next: null
 	}
-	if(order){
+	if(order && this.start){
 				
 		var point = this.traverse(item, this.start);
-		var temp = point.next;
-		point.next = newItem;
-		newItem.next = temp;
+	
+
+		if(point){
+			var temp = point.next;
+			point.next = newItem;
+			newItem.next = temp;
+		} else {
+			var temp = this.start.next;
+			this.start = newItem;
+			newItem.next = temp;
+		}
+
+		if(point === this.end) this.end = newItem;
 
 	} else {
 		if(this.end){
@@ -39,13 +49,20 @@ Link.prototype.traverse = function(x, y){
 	// Allowing you to insert item in the linked list in order
 
 	y = y || this.start;
-	
+
+	if(!y) return null;
+
+
 	if(y === this.start){
 		if(x < y.data){
 			return null;
 		}
 	}
-	
+
+	if(y === this.end){
+		return y;
+	}
+
 	if(x < y.next.data) {
 		return y;
 	} else {

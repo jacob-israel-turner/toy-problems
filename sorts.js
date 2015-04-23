@@ -1,5 +1,5 @@
 import consoleTime from 'console-time'; 
-import { Link, heapify, bubbleUp, bubbleDown, s, diff, isSorted } from './utils.js';
+import { makeArray, Link, heapify, bubbleUp, bubbleDown, s, diff, isSorted } from './utils.js';
 
 
 /*
@@ -35,13 +35,9 @@ t(bucketSort, options);
 // t(countingSort, options);
 // t(bucketSort, options);
 
-/*
-var testArr = [];
-for(var i = 0; i < 100; i++){
-	testArr.push(Math.floor(Math.random() * 100));
-}
-*/
+var testArr = makeArray(100);
 
+// console.log(bucketSort([1,5,3,6,3,2,3,5,7,10,9,3,3,3]));
 // console.log(bucketSort(testArr));
 // console.log(countingSort(testArr));
 // console.log(heapSort([1,6,3,14,19,3,20,10,8,1,1,2,12]));
@@ -62,12 +58,14 @@ function bucketSort(arr){
 	if(arr.length <= 1) return arr;
 	var buckets = disperse(arr, makeBucketArray(arr.length));
 
-
-	var sortedArray = [];
+	var sortedArray = [];	
 
 	for(var i = 0; i < buckets.length; i++){
-		sortedArray.push(concatLinkList(buckets[i]));
+		var item = concatLinkList(buckets[i]);
+		sortedArray = sortedArray.concat(item);
 	}
+
+	return sortedArray;
 
 	/*
 	return buckets.reduce(function(prev, next){
@@ -85,7 +83,9 @@ function bucketSort(arr){
 	*/
 
 
+	/*
  function concatLinkList(obj){
+ 	 // old
 	var arr = [];
 	if(obj.data || obj.data === 0) arr.push(obj.data);
 	if(!obj.start && ( !obj.data && obj.data !== 0 )) return arr;
@@ -93,6 +93,36 @@ function bucketSort(arr){
 	if(obj.next) return arr.concat(concatLinkList(obj.next));
 	else return arr;
  };
+	*/
+
+ 	/*
+	function concatLinkList(obj){
+		// refactor 1
+		var results = [];
+
+		if(obj.start) traverse(obj.start);
+		function traverse(item){
+			results.push(item.data);
+			if(item.next) traverse(item.next);
+		}
+		return results;
+	}
+	*/
+
+
+	function concatLinkList(obj){
+	
+		var results = [];
+
+		var item = obj.start;
+		if(!item) return results;
+		while(item) {
+			results.push(item.data);
+			item = item.next;
+		};
+		return results;
+
+	};
 
 	/*
 	function trimBuckets(arr){

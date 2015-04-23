@@ -1,4 +1,12 @@
-export { Link, heapify, bubbleUp, bubbleDown, s, diff, isSorted };
+export { makeArray, Link, heapify, bubbleUp, bubbleDown, s, diff, isSorted };
+
+function makeArray(size, range){
+	var arr = [];
+	for(var i = 0; i <  size; i++){
+		arr.push(Math.floor(Math.random() * (range || size)));
+	};
+	return arr;
+}
 
 function Link(){
 	this.start = null;
@@ -23,10 +31,14 @@ Link.prototype.add = function(item, order){
 		} else {
 			var temp = this.start.next;
 			this.start = newItem;
-			newItem.next = temp;
+			// newItem.next = temp;
+			this.start.next = temp;	
 		}
 
-		if(point === this.end) this.end = newItem;
+		if(point === this.end) {
+			this.end.next = newItem;
+			this.end = newItem;
+		}
 
 	} else {
 		if(this.end){
@@ -62,6 +74,16 @@ Link.prototype.traverse = function(x, y){
 	if(y === this.end){
 		return y;
 	}
+
+	if(y.next === null) {
+		/*
+		 * line 84 is throwing an error very infrequently.
+		 * 'this' just before it errors out looks like so:
+		 * { start: { data: 0, next: null }, end: { data: 1, next: null } }
+		 */
+		console.log(this);
+		console.log(y, this.end)
+	};
 
 	if(x < y.next.data) {
 		return y;

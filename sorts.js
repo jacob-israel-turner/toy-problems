@@ -48,13 +48,6 @@ var testArr = makeArray(100);
 
 function bucketSort(arr){
 
-	/*
-	 * It's not working.
-	 * I think 'concatLinkList' is only returning one
-	 * value instead of the array of items.
-	 */
-
-
 	if(arr.length <= 1) return arr;
 	var buckets = disperse(arr, makeBucketArray(arr.length));
 

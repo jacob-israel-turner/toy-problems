@@ -32,11 +32,11 @@ Link.prototype.add = function(item, order){
 			var temp = this.start.next;
 			this.start = newItem;
 			// newItem.next = temp;
-			this.start.next = temp;	
+			this.start.next = temp || this.end; // When inserting a new 'next' into a single-item linked list,
+				// This will prevent this.start.next from being null, when there is a second item.
 		}
 
-		if(point === this.end) {
-			this.end.next = newItem;
+		if(point === this.end) {	
 			this.end = newItem;
 		}
 

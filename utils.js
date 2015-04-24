@@ -75,16 +75,6 @@ Link.prototype.traverse = function(x, y){
 		return y;
 	}
 
-	if(y.next === null) {
-		/*
-		 * line 84 is throwing an error very infrequently.
-		 * 'this' just before it errors out looks like so:
-		 * { start: { data: 0, next: null }, end: { data: 1, next: null } }
-		 */
-		console.log(this);
-		console.log(y, this.end)
-	};
-
 	if(x < y.next.data) {
 		return y;
 	} else {
